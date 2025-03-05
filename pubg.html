@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار ببجي - تحدى أصدقائك!</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            direction: rtl;
+            animation: fadeIn 1s ease-in-out;
+        }
+        section {
+            margin: 50px auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 0px 20px rgba(255, 204, 0, 0.8);
+            transition: transform 0.3s ease;
+        }
+        section:hover {
+            transform: scale(1.02);
+        }
+        button {
+            background: linear-gradient(90deg, #ffcc00, #ff9900);
+            color: #0d0d0d;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: transform 0.3s ease, background 0.3s ease;
+            margin: 10px;
+            box-shadow: 0px 4px 10px rgba(255, 204, 0, 0.6);
+        }
+        button:hover {
+            background: linear-gradient(90deg, #ff9900, #e68a00);
+            transform: scale(1.15);
+        }
+        .option-button {
+            display: block;
+            width: 80%;
+            margin: 10px auto;
+            background: linear-gradient(90deg, #3a3a5e, #6a6ab0);
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 10px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .option-button:hover {
+            background: linear-gradient(90deg, #4a4a7e, #8a8ace);
+            transform: scale(1.1);
+        }
+        .image-container img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0px 0px 15px rgba(255, 204, 0, 0.8);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <section id="quiz">
+        <h2>🔥 اختبار ببجي 🔥</h2>
+        <p>هل أنت محترف ببجي؟ اختبر معلوماتك الآن!</p>
+        <div class="image-container">
+            <img src="https://cdn.akamai.steamstatic.com/steam/apps/578080/header.jpg" alt="PUBG Image">
+        </div>
+        <div id="quiz-container"></div>
+        <button onclick="startQuiz()">ابدأ الاختبار</button>
+        <p id="score">النتيجة: 0</p>
+    </section>
+    
+    <script>
+        let questions = [
+            { question: "ما هو أقوى سلاح للقتال القريب؟", options: ["M416", "P90", "AWM", "SKS"], answer: "P90" },
+            { question: "ما هو أقوى قناص في ببجي؟", options: ["M24", "Kar98k", "AWM", "Win94"], answer: "AWM" },
+            { question: "كم عدد اللاعبين في مباراة كلاسيكية في ببجي؟", options: ["50", "75", "100", "150"], answer: "100" },
+            { question: "أي من هذه المركبات الأسرع في ببجي؟", options: ["Buggy", "Dacia", "Motorcycle", "UAZ"], answer: "Motorcycle" },
+            { question: "ما هي أقوى خوذة للحماية؟", options: ["المستوى 1", "المستوى 2", "المستوى 3", "بدون خوذة"], answer: "المستوى 3" },
+            { question: "ما هو السلاح الذي يستخدم ذخيرة 7.62mm؟", options: ["M416", "UMP45", "AKM", "Vector"], answer: "AKM" },
+            { question: "ما هو العنصر الذي ينقذك من الموت في ببجي؟", options: ["الإسعافات الأولية", "مشروب طاقة", "الخوذة", "المسكنات"], answer: "الإسعافات الأولية" },
+            { question: "أي خريطة في ببجي تحتوي على صحراء؟", options: ["Erangel", "Miramar", "Vikendi", "Sanhok"], answer: "Miramar" },
+            { question: "كم عدد المستويات في الدروع الواقية؟", options: ["1", "2", "3", "4"], answer: "3" },
+            { question: "ما هي أقوى حقيبة ظهر في ببجي؟", options: ["المستوى 1", "المستوى 2", "المستوى 3", "المستوى 4"], answer: "المستوى 3" }
+        ];
+        let currentQuestion = 0;
+        let score = 0;
+
+        function startQuiz() {
+            document.getElementById("quiz-container").innerHTML = "";
+            score = 0;
+            currentQuestion = 0;
+            document.getElementById("score").innerText = "النتيجة: 0";
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                document.getElementById("quiz-container").innerHTML = `<h3>🎉 الاختبار انتهى! نتيجتك هي ${score}/${questions.length} 🎉</h3>`;
+                return;
+            }
+            let q = questions[currentQuestion];
+            let quizHTML = `<h3>${q.question}</h3>`;
+            q.options.forEach(option => {
+                quizHTML += `<button class='option-button' onclick="checkAnswer('${option}')">${option}</button>`;
+            });
+            document.getElementById("quiz-container").innerHTML = quizHTML;
+        }
+
+        function checkAnswer(answer) {
+            if (answer === questions[currentQuestion].answer) {
+                score++;
+            }
+            currentQuestion++;
+            document.getElementById("score").innerText = "النتيجة: " + score;
+            loadQuestion();
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
